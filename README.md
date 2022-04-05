@@ -17,11 +17,50 @@ The basic idea of a naive Bayes classifier is described in [this document](https
 
 2. As in Section 17.4.3, read the dataset from the `wines.csv` file as a `Table` object and give it the name `wines`.  Do NOT convert this dataset to a new one with only two classes of wine.  We will keep all three classes for this assignment.
 
-3. As you will see from the naive Bayes classifier document(), you'll need the means and standard deviations of the quantitative variables for each wine class.  You can get them using the `group` method, which allows for an optional function to be used on the values in each group:
+3. As you will see from the [naive Bayes classifier document](https://github.com/DS200-SP2022-Hunter/Week12-Apr05/blob/main/NaiveBayes.pdf), you'll need the means and standard deviations of the quantitative variables for each wine class.  You can get them using the `group` method, which allows for an optional function to be used on the values in each group:
 ```
 wineMeans = wine.group("Class", np.mean)
 wineSDs = wine.group("Class", np.std)
 ```
+
+4. You'll also notice from the [naive Bayes classifier document](https://github.com/DS200-SP2022-Hunter/Week12-Apr05/blob/main/NaiveBayes.pdf) that you'll need prior probabilities of the three wine categories.  For this purpose, instead of assuming that each class is equally probable a priori, let us suppose that our sample of wines is representative of the population we care about, so that the prior probabilities may be taken to be the overall proportions of the three classes.  We can calculate these proportions by using the `group` method to count how many are in each class:
+```
+prior = wine.group("Class").column('count') / wine.num_rows
+prior
+```
+
+5. To calculate conditional probabilities of the form P(X | C=1) will require the formula for the normal curve with mean and SD given by corresponding values from the `wineMeans` and `wineSDs` objects.  The function that evaluates the normal curve is `norm.pdf` from the `scipy.stats` library.  Verify that the following code returns the value of the normal curve evaluated at 2 when the mean is 2 and the SD is 1, which should equal the square root of (1/2&pi;):
+```
+from scipy import stats
+stats.norm.pdf(2, 2, 1)
+```
+
+6.  We can now begin to collect the pieces.  Suppose we'd like to focus on the wine in row r.  Here is a function that takes r and the name of a variable, then returns the three probabilities P(X | C=1), P(X | C=2), and P(X | C=3), where X is the value of the selected variable in the selected row:
+```
+def prob(r, variable):
+  means = wineMeans.column(variable) # This is an array with 3 elements
+  SDs = wineSDs.column(variable) # This is an array with 3 elements
+  X = wine.column(variable).item(r) # This is a single value
+  return stats.norm.pdf(X, means, SDs) # This is an array with 3 elements
+```
+ 
+7.  Let us now focus on the variables `Ash` and `Alcohol`.  Suppose we want to predict the class of the wine in row 0.  We need to combine the three probabilities found by the `prob` function we just defined (three for each of `Ash` and `Alcohol`) together with the prior probabilities to obtain the three terms in the denominator of Bayes' Theorem in the [naive Bayes classifier document](https://github.com/DS200-SP2022-Hunter/Week12-Apr05/blob/main/NaiveBayes.pdf):
+```
+prob(0, 'Ash') * prob(0, 'Alcohol') * prior
+```
+According to Bayes' theorem, the probabilities of the three classes are determined by our naive Bayes classifier by dividing each of the three values above by their sum:
+```
+bayes = prob(0, 'Ash') * prob(0, 'Alcohol') * prior
+bayes / np.sum(bayes)
+```
+Which class has the greatest probability according to our classifier?  Does this agree with the true class according to the 0th row of the `wine` table?
+
+8. The `numpy` function called `argmax` returns the index (0, 1, or 2) of the maximum value of a 3-item array.  If we add 1 to this index, we now have our classifier.  For instance, let's classify the wine in row 10:
+```
+bayes = prob(10, 'Ash') * prob(10, 'Alcohol') * prior
+1 + np.argmax(bayes / np.sum(bayes))
+```
+9.  We can now apply this naive Bayes classifier to each row in the `wines` table using a `for` loop.  **Caution!** This is dangerous because we are using the same dataset (the `wines` table) to train the classifier as we are now using to test it.
 
 12.  Finally, make sure that your Jupyter notebook only includes code and text that is relevant to this assignment.  For instance, if you have been completing this assignment by editing the original code from Section 13.2, make sure to delete the material that isn't relevant before turning in your work.
 
