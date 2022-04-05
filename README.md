@@ -17,7 +17,11 @@ The basic idea of a naive Bayes classifier is described in [this document](https
 
 2. As in Section 17.4.3, read the dataset from the `wines.csv` file as a `Table` object and give it the name `wines`.  Do NOT convert this dataset to a new one with only two classes of wine.  We will keep all three classes for this assignment.
 
-3.
+3. As you will see from the naive Bayes classifier document(), you'll need the means and standard deviations of the quantitative variables for each wine class.  You can get them using the `group` method, which allows for an optional function to be used on the values in each group:
+```
+wineMeans = wine.group("Class", np.mean)
+wineSDs = wine.group("Class", np.std)
+```
 
 12.  Finally, make sure that your Jupyter notebook only includes code and text that is relevant to this assignment.  For instance, if you have been completing this assignment by editing the original code from Section 13.2, make sure to delete the material that isn't relevant before turning in your work.
 
