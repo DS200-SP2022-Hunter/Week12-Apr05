@@ -15,7 +15,7 @@ The basic idea of a naive Bayes classifier is described in [this document](https
 !pip install --upgrade datascience
 ```
 
-2. As in Section 17.4.3, read the dataset from the `wines.csv` file as a `Table` object and give it the name `wine`.  Do NOT convert this dataset to a new one with only two classes of wine.  We will keep all three classes for this assignment.
+2. As in Section 17.4.3, read the dataset from the `wine.csv` file as a `Table` object and give it the name `wine`.  Do NOT convert this dataset to a new one with only two classes of wine.  We will keep all three classes for this assignment.
 
 3. As you will see from the [naive Bayes classifier document](https://github.com/DS200-SP2022-Hunter/Week12-Apr05/blob/main/NaiveBayes.pdf), you'll need the means and standard deviations of the quantitative variables for each wine class.  You can get them using the `group` method, which allows for an optional function to be used on the values in each group:
 ```
