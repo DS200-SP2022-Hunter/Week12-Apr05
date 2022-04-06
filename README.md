@@ -60,7 +60,27 @@ Which class has the greatest probability according to our classifier?  Does this
 bayes = prob(10, 'Ash') * prob(10, 'Alcohol') * prior
 1 + np.argmax(bayes / np.sum(bayes))
 ```
-9.  We can now apply this naive Bayes classifier to each row in the `wines` table using a `for` loop.  **Caution!** This is dangerous because we are using the same dataset (the `wines` table) to train the classifier as we are now using to test it.
+9.  We can now apply this naive Bayes classifier to each row in the `wines` table using a `for` loop.  **Caution!** This is dangerous because we are using the same dataset (the `wines` table) to train the classifier as we are now using to test it.  Ordinarily we should, for example, split the dataset into multiple parts, and use only one part for testing at a time while using the others for training; this procedure is called cross-validation.  In the extreme, we can test each row after training the classifier on all the other rows; this is called leave-one out cross-validation.  However, for the sake of simplicity on this assignment we will use the whole dataset for training AND for testing.  Here is a for loop that puts all of the previous steps together:
+```
+predictions = make_array() # Start with an empty array
+
+# Now repeat our earlier procedure on each row
+for r in np.arange(wine.num_rows): 
+  bayes = prob(r, 'Ash') * prob(r, 'Alcohol') * prior
+  predictions = np.append(predictions, 1 + np.argmax(bayes / np.sum(bayes)))
+
+# Finally, create a new table that adds column for predicted class values
+results = wine.with_columns('Predicted Class', predictions)
+```
+
+10. We can determine how many times each of the possible actual class / predicted class pairs occurred using the `pivot` method.  Using this information, calculate what percent of the predictions our naive Bayes classifier, based on `Ash` and `Alcohol`, got correct:
+```
+results.pivot('Class', 'Predicted Class')
+```
+
+11. You can create a scatterplot of `Ash` vs. `Alcohol` with points colored according to `Class` using `wine.scatter('Ash', 'Alcohol', group='Class')`.  Search for a different pair of variables that seems to separate the three groups better than `Ash` and `Alcohol`.  Include a scatterplot of these two variables with points colored according to `Class`, then implement the naive Bayes classifier using those two variables to check that they give a better percentage of correct predictions.
+
+12.  Modify your naive Bayes classifier so that it uses more than two variables.  Search for combinations of three of more variables that achieve a correct prediction rate of higher than 90%.  How high can you achieve?  Include your code that shows which variables you use as well as your pivot table demonstrating your classifier's prediction performance.  (Something to consider:  Is it always the case that more variables lead to better predictions?)
 
 12.  Finally, make sure that your Jupyter notebook only includes code and text that is relevant to this assignment.  For instance, if you have been completing this assignment by editing the original code from Section 13.2, make sure to delete the material that isn't relevant before turning in your work.
 
