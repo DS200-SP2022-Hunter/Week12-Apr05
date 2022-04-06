@@ -59,6 +59,8 @@ Which class has the greatest probability according to our classifier?  Does this
 ```
 bayes = prob(10, 'Ash') * prob(10, 'Alcohol') * prior
 1 + np.argmax(bayes / np.sum(bayes))
+
+# Strictly speaking, we could have just used 1 + np.argmax(bayes).  But dividing by the sum makes the connection with Bayes' Theorem more obvious.
 ```
 9.  We can now apply this naive Bayes classifier to each row in the `wines` table using a `for` loop.  **Caution!** This is dangerous because we are using the same dataset (the `wines` table) to train the classifier as we are now using to test it.  Ordinarily we should, for example, split the dataset into multiple parts, and use only one part for testing at a time while using the others for training; this procedure is called cross-validation.  In the extreme, we can test each row after training the classifier on all the other rows; this is called leave-one-out cross-validation.  However, for the sake of simplicity on this assignment we will use the whole dataset for training AND for testing.  Here is a for loop that puts all of the previous steps together:
 ```
