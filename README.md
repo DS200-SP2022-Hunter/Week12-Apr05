@@ -4,7 +4,7 @@
 The main objective of today's lab is to use Bayes Theorem and some simplifying assumptions to create a classfier, known as a naive Bayes classifier, for predicting the category of wines based on several quantitative measurements.  
 
 
-**Objective**:  Use the `wines` dataset from [Section 17.4](https://inferentialthinking.com/chapters/17/4/Implementing_the_Classifier.html) to train a naive Bayes classifier to predict the type of wine from quantitative measurements.  We'll make two simplifying assumptions:  conditional independence of features and the quantitative variables are all normally distributed.  
+**Objective**:  Use the `wine` dataset from [Section 17.4](https://inferentialthinking.com/chapters/17/4/Implementing_the_Classifier.html) to train a naive Bayes classifier to predict the type of wine from quantitative measurements.  We'll make two simplifying assumptions:  conditional independence of features and the quantitative variables are all normally distributed.  
 
 The basic idea of a naive Bayes classifier is described in [this document](https://github.com/DS200-SP2022-Hunter/Week12-Apr05/blob/main/NaiveBayes.pdf).
 
@@ -15,7 +15,7 @@ The basic idea of a naive Bayes classifier is described in [this document](https
 !pip install --upgrade datascience
 ```
 
-2. As in Section 17.4.3, read the dataset from the `wines.csv` file as a `Table` object and give it the name `wines`.  Do NOT convert this dataset to a new one with only two classes of wine.  We will keep all three classes for this assignment.
+2. As in Section 17.4.3, read the dataset from the `wines.csv` file as a `Table` object and give it the name `wine`.  Do NOT convert this dataset to a new one with only two classes of wine.  We will keep all three classes for this assignment.
 
 3. As you will see from the [naive Bayes classifier document](https://github.com/DS200-SP2022-Hunter/Week12-Apr05/blob/main/NaiveBayes.pdf), you'll need the means and standard deviations of the quantitative variables for each wine class.  You can get them using the `group` method, which allows for an optional function to be used on the values in each group:
 ```
@@ -62,7 +62,7 @@ bayes = prob(10, 'Ash') * prob(10, 'Alcohol') * prior
 
 # Strictly speaking, we could have just used 1 + np.argmax(bayes).  But dividing by the sum makes the connection with Bayes' Theorem more obvious.
 ```
-9.  We can now apply this naive Bayes classifier to each row in the `wines` table using a `for` loop.  **Caution!** This is dangerous because we are using the same dataset (the `wines` table) to train the classifier as we are now using to test it.  Ordinarily we should, for example, split the dataset into multiple parts, and use only one part for testing at a time while using the others for training; this procedure is called cross-validation.  In the extreme, we can test each row after training the classifier on all the other rows; this is called leave-one-out cross-validation.  However, for the sake of simplicity on this assignment we will use the whole dataset for training AND for testing.  Here is a for loop that puts all of the previous steps together:
+9.  We can now apply this naive Bayes classifier to each row in the `wine` table using a `for` loop.  **Caution!** This is dangerous because we are using the same dataset (the `wine` table) to train the classifier as we are now using to test it.  Ordinarily we should, for example, split the dataset into multiple parts, and use only one part for testing at a time while using the others for training; this procedure is called cross-validation.  In the extreme, we can test each row after training the classifier on all the other rows; this is called leave-one-out cross-validation.  However, for the sake of simplicity on this assignment we will use the whole dataset for training AND for testing.  Here is a for loop that puts all of the previous steps together:
 ```
 predictions = make_array() # Start with an empty array
 
