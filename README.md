@@ -38,8 +38,8 @@ stats.norm.pdf(2, 2, 1)
 6.  We can now begin to collect the pieces.  Suppose we'd like to focus on the wine in row r.  Here is a function that takes r and the name of a variable, then returns the three probabilities P(X | C=1), P(X | C=2), and P(X | C=3), where X is the value of the selected variable in the selected row:
 ```
 def prob(r, variable):
-  means = wineMeans.column(variable) # This is an array with 3 elements
-  SDs = wineSDs.column(variable) # This is an array with 3 elements
+  means = wineMeans.column(variable + ' mean') # This is an array with 3 elements
+  SDs = wineSDs.column(variable + ' std') # This is an array with 3 elements
   X = wine.column(variable).item(r) # This is a single value
   return stats.norm.pdf(X, means, SDs) # This is an array with 3 elements
 ```
